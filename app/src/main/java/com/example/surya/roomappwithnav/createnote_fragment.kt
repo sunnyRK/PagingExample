@@ -21,16 +21,10 @@ class createnote_fragment : Fragment() {
     lateinit var editKey: String
     lateinit var editNote: String
 
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_createnote_fragment, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,12 +46,9 @@ class createnote_fragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                if(p0?.length!! > 0)
-                {
+                if(p0?.length!! > 0) {
                     setHasOptionsMenu(true)
-                }
-                else
-                {
+                } else {
                     setHasOptionsMenu(false)
                 }
             }
@@ -79,9 +70,7 @@ class createnote_fragment : Fragment() {
             Db.noteDao().insert(noteObj)
         }
         note.setText("")
-
         (activity as MainActivity).onSupportNavigateUp()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -93,7 +82,6 @@ class createnote_fragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater?) {
         menuInflater?.inflate(R.menu.toolbar_menu, menu)

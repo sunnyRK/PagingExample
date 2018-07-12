@@ -1,5 +1,6 @@
 package com.example.surya.roomappwithnav.Adapters
 
+import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.arch.paging.PagedListAdapter
 import android.arch.persistence.room.Room
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.surya.roomappwithnav.DatabaseFile.RoomDatabases
 import com.example.surya.roomappwithnav.MainActivity
@@ -17,11 +19,13 @@ import com.example.surya.roomappwithnav.Modal.Note
 import com.example.surya.roomappwithnav.R
 import com.example.surya.roomappwithnav.R.id.note
 import com.example.surya.roomappwithnav.R.id.notedesc
+import com.example.surya.roomappwithnav.Viewmodel.MainViewModel
 import com.example.surya.roomappwithnav.listfragment
 import kotlinx.android.synthetic.main.fragment_createnote_fragment.*
 import kotlinx.android.synthetic.main.note_card.view.*
 
-class RoomAdap(context: Context, private var items: PagedList<Note>,view: View): PagedListAdapter<Note,RoomAdap.ViewHolder>(Note.DiffCallback)
+class RoomAdap(context: Context, private var items: PagedList<Note>,view: View):
+              PagedListAdapter<Note,RoomAdap.NoteViewHolder>(Note.DiffCallback)
 {
     var context: Context
     var view: View
@@ -31,9 +35,8 @@ class RoomAdap(context: Context, private var items: PagedList<Note>,view: View):
         this.view = view
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        val notedesc: String? = items.get(position)?.note
+    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
+        val notedesc: String = items.get(position)?.note!!
         val id: String = items.get(position)?.id.toString()
         holder.notedescription?.text = notedesc
 
@@ -51,22 +54,21 @@ class RoomAdap(context: Context, private var items: PagedList<Note>,view: View):
             noteObj.note = notedesc.toString()
             noteObj.id = id.toLong()
             Db.noteDao().delete(noteObj)
-            items.removeAt(position)
+//            items.removeAt(position)
             notifyDataSetChanged()
         }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder{
         val v =  LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false)
-        return ViewHolder(v)
+        return NoteViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view)
+    class NoteViewHolder(view: View): RecyclerView.ViewHolder(view)
     {
         var notedescription = view.notedesc
         var notedeleteBtn = view.delNote

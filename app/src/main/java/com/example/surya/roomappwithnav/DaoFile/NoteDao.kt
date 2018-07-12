@@ -8,18 +8,15 @@ import com.example.surya.roomappwithnav.Modal.Note
 
 @Dao
 interface NoteDao {
-//
-//    @Query("SELECT * from notetable ORDER BY id DESC")
-//    fun getAll(): LiveData<MutableList<Note>>
 
     @Insert
-    fun insert(user: Note)
+    fun insert(note: Note)
 
     @Update
-    fun update(user: Note)
+    fun update(note: Note)
 
     @Delete
-    fun delete(user: Note)
+    fun delete(note: Note)
 
     @Query("DELETE from notetable")
     fun deleteAll()
