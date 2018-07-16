@@ -23,54 +23,56 @@ import com.example.surya.roomappwithnav.Viewmodel.MainViewModel
 import com.example.surya.roomappwithnav.listfragment
 import kotlinx.android.synthetic.main.fragment_createnote_fragment.*
 import kotlinx.android.synthetic.main.note_card.view.*
-
-class RoomAdap(context: Context, private var items: PagedList<Note>,view: View):
-              PagedListAdapter<Note,RoomAdap.NoteViewHolder>(Note.DiffCallback)
-{
-    var context: Context
-    var view: View
-
-    init {
-        this.context = context
-        this.view = view
-    }
-
-    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val notedesc: String = items.get(position)?.note!!
-        val id: String = items.get(position)?.id.toString()
-        holder.notedescription?.text = notedesc
-
-        holder.notedescription.setOnClickListener {
-            var mArgs =Bundle()
-            mArgs.putInt("Edit", 1)
-            mArgs.putString("Note", notedesc)
-            mArgs.putString("key", items.get(position)?.id.toString())
-            Navigation.findNavController(view).navigate(R.id.createnote_fragment,mArgs)
-        }
-
-        holder.notedeleteBtn.setOnClickListener {
-            val Db = Room.databaseBuilder(context, RoomDatabases::class.java,"note.db").allowMainThreadQueries().build()
-            val noteObj = Note()
-            noteObj.note = notedesc.toString()
-            noteObj.id = id.toLong()
-            Db.noteDao().delete(noteObj)
-//            items.removeAt(position)
-            notifyDataSetChanged()
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder{
-        val v =  LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false)
-        return NoteViewHolder(v)
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    class NoteViewHolder(view: View): RecyclerView.ViewHolder(view)
-    {
-        var notedescription = view.notedesc
-        var notedeleteBtn = view.delNote
-    }
-}
+//
+//class RoomAdap(context: Context, private var items: PagedList<Note>,view: View):
+//              PagedListAdapter<Note,RoomAdap.NoteViewHolder>(Note.DiffCallback)
+//{
+//
+//    var context: Context
+//    var view: View
+//    var notes: Note? = null
+//    init {
+//        this.context = context
+//        this.view = view
+//    }
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder{
+//        val v =  LayoutInflater.from(parent.context).inflate(R.layout.note_card,parent,false)
+//        return NoteViewHolder(v)
+//    }
+//
+//    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
+//        val notedesc: String = items.get(position)?.note!!
+//        val id: String = items.get(position)?.id.toString()
+//        holder.notedescription?.text = notedesc
+//
+//        holder.notedescription.setOnClickListener {
+//            var mArgs =Bundle()
+//            mArgs.putInt("Edit", 1)
+//            mArgs.putString("Note", notedesc)
+//            mArgs.putString("key", items.get(position)?.id.toString())
+//            Navigation.findNavController(view).navigate(R.id.createnote_fragment,mArgs)
+//        }
+//
+//        holder.notedeleteBtn.setOnClickListener {
+//            val Db = Room.databaseBuilder(context, RoomDatabases::class.java,"note.db").allowMainThreadQueries().build()
+//            val noteObj = Note()
+//            noteObj.note = notedesc.toString()
+//            noteObj.id = id.toLong()
+//            Db.noteDao().delete(noteObj)
+////            items.removeAt(position)
+//            notifyDataSetChanged()
+//        }
+//    }
+//
+//
+//    override fun getItemCount(): Int {
+//        return items.size
+//    }
+//
+//    class NoteViewHolder(view: View): RecyclerView.ViewHolder(view)
+//    {
+//        var notedescription = view.notedesc
+//        var notedeleteBtn = view.delNote
+//    }
+//}

@@ -9,16 +9,4 @@ import android.support.v7.util.DiffUtil
 data class Note(@PrimaryKey(autoGenerate = true) var id: Long?,@ColumnInfo(name = "note") var note: String)
 {
     constructor() : this(null, "")
-
-    companion object {
-        val DiffCallback = object : DiffUtil.ItemCallback<Note>() {
-            override fun areItemsTheSame(oldItem: Note?, newItem: Note?): Boolean
-                    = oldItem != null && newItem != null && oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Note?, newItem: Note?): Boolean
-                    = oldItem != null && newItem != null
-                    && oldItem.id == newItem.id
-                    && oldItem.note == newItem.note
-        }
-    }
 }

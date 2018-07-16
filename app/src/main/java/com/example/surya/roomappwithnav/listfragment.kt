@@ -15,7 +15,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import com.example.surya.roomappwithnav.Adapters.RoomAdap
+import com.example.surya.roomappwithnav.Adapters.NoteAdap
+//import com.example.surya.roomappwithnav.Adapters.RoomAdap
 import com.example.surya.roomappwithnav.DaoFile.NoteDao
 import com.example.surya.roomappwithnav.DatabaseFile.RoomDatabases
 import com.example.surya.roomappwithnav.Modal.Note
@@ -24,10 +25,10 @@ import kotlinx.android.synthetic.main.fragment_listfragment.*
 
 class listfragment : Fragment() {
     var Db: RoomDatabases? = null
-    lateinit var adapterObj: RoomAdap
+    lateinit var adapNote: NoteAdap
     lateinit var noteDao: NoteDao
 
-    private val viewModel: MainViewModel by lazy {
+    val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
@@ -43,7 +44,7 @@ class listfragment : Fragment() {
         noteDao = Db!!.noteDao()
 
         viewModel.initMethod(noteDao)
-        ViewModelCalling()
+        ViewModelCalling(view)
 
         addNote.setOnClickListener {
             var mArgs =Bundle()
@@ -56,16 +57,17 @@ class listfragment : Fragment() {
         }
     }
 
-    fun ViewModelCalling()
+    fun ViewModelCalling(view: View)
     {
         viewModel.list.observe(this, object : Observer<PagedList<Note>> {
             override fun onChanged(notelist: PagedList<Note>?) {
                 if (notelist != null) {
-                    adapterObj = RoomAdap(activity as MainActivity, notelist, view!!)
+                    Toast.makeText(context,"hey1",Toast.LENGTH_SHORT).show()
+                    adapNote = NoteAdap(view,viewModel,this@listfragment)
+                    adapNote.submitList(notelist)
                     rvRoom?.layoutManager = LinearLayoutManager(context)
                     rvRoom?.itemAnimator = DefaultItemAnimator()
-                    rvRoom?.adapter = adapterObj
-                    adapterObj.notifyDataSetChanged()
+                    rvRoom?.adapter = adapNote
                 }
             }
         })
